@@ -37,9 +37,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # Third party apps
     "rest_framework",
     "rest_framework.authtoken",
+
+    # Local apps
     "product",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -138,3 +143,31 @@ MEDIA_URL = "/media/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTHENTICATION_BACKENDS = [
+    'users.backends.phone_backends.PhoneNumberAuthBackend',
+    'users.backends.email_backends.EmailAuthBackend',
+]
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smpt.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'abyy1144@gmail.com'
+EMAIL_HOST_PASSWORD = 'abuygt240'
+
+# Phone number field
+PHONE_NUMBER_REGION = 'ID'
+
+# Token length for otp
+TOKEN_LENGTH = 6
+
+# Token expiry
+TOKEN_EXPIRE_MINUTES = 3
+
+
