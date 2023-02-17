@@ -10,8 +10,8 @@ from django_countries.serializers import CountryFieldMixin
 
 from .exceptions import (
     AccountNotRegisteredException,
-    InvalidCredentionsException,
-    AccountDisabledExcepyion,
+    InvalidCredentialsException,
+    AccountDisabledException,
 )
 
 from .models import Address, CountryField, PhoneNumber, Profile
@@ -26,7 +26,7 @@ class UserRegistrationSerializer(RegisterSerializer):
     phone_number = PhoneNumberField(
         required=False,
         write_only=True,
-        validator=[
+        validators=[
             UniqueValidator(
                 queryset=PhoneNumber.objects.all(),
                 message=_("A user is already registered with this phone number."),
@@ -98,10 +98,10 @@ class UserLoginSerializer(serializers.Serializer):
         user = self._validate_phone_email(phone_number, email, password)
 
         if not user:
-            raise InvalidCredentionsException()
+            raise InvalidCredentialsException()
 
         if not user.is_active:
-            raise AccountDisabledExcepyion()
+            raise AccountDisabledException()
 
         if email:
             email_address = user.emailaddress_set.filter(
